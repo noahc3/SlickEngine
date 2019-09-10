@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextobjectid="17">
+ <tileset firstgid="1" source="../tilesets/Overworld.tsx"/>
+ <layer name="Collisions" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3Z4W6CMBQGUEzm+7q3gZj93msuZDYagoNJi7flnKQhxgTv7SeFatcBAPxff+66IdAY6zmyaP1Hq2dv0fqPVk9pc+vT43vT8Y76juSvflMGgzx2E73fo93na+2r1rrnTO8ZNWotj9q10EOSo5fP0/ZzbCGPWFq6z8/VvLTX+Kqkz1ryWLqHR9j75VBL3aXrjDIPUepYkqPO74+y588hSh1LSucRRZQ81vxvsZU81itZx2WHvUau54iW8xhzGPd9w+2YxrPP3jKfj+fY4p15lPwdKs17P5n/6etURzq++j1v4foo+dnP8lhzfbxz/9JqHuNadbmtVenYn+75zM39EfPI/cz0qqh57ClSj/KI1aM84vd4lBygpOv5dxCDdQ0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7n4ABoITMECcAAA=
+  </data>
+ </layer>
+ <layer name="Floor" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu2Zu3ITMRSGdz3rEkzL7QGgD6GHPAyXSQ88QaAEApTAExBqCC6BJwBqMJTceiSywidC2tXaK62y+b6Zf5LY68lan4+OJG+XRbFNOmVXpG92S7JOxuDjmsrrjHL9CPh4VBXFY5EnVdh1bdf/fY3Kl4zyMHMfeowvT4viTbXM5tQ9zvvV4etM5uI6ux72VU5O8kmuPsxn3XZhe5FOQnzoevgsHCzU75cm+SRHH66a8GW+go8TtQs9P8wmw/QtX3Lz0cXFuj50cvPxqly9z8fw4RvTdX3IfrEh5ofNBD5uqfd2u86dovlaPZeu2udz8uGrq5l67Fu1fF+LRJ9z6eCM+vtZcZDTZbMTWbtd+3xOPlyvMy7Mmtb079QO7DQ52Wjp80179KF9mPH2ve5f7ZSH11P22PWVJgd2nnt8+DJUfSzUGJ4K6OfShcuHfF77sPvF08Bxi5WuPkL6fAwfIU5sF9KHfu5rdfC87OH2+3ur/t+7NfKjHtfvjsdi+Ajp87F8tK1559X/96sdGg+mJmL2cFNfclxDa047fN/RR0ifj+GjzYWrNlyRPmLsMVw+dM2F1EjX2tBp6/OxfPj6uZyHQu7f9PCUPtqcmLmta200JbYPM+/I/uGqibZzct0zYu75fD6ME1fP6dNDKh8mxouvJuSewtSB+Zli39fkw2RH3ffdOvcC6zpXH23x+Uh1Thji44VysFfn5Qh9yDnKfG8h1374SOtD1sTMs95IdU5oekRTTzhOPlKdC9r5qe7zl5Xfnnsfmw/fd6spz2ntnFU5Z+V+6fYyNh+yHoyDlN9bhPowOW9dO1YfsmcM4UDOUQ+OkQ/Xnk6e1Qzlo6kmxuzDXrfaa6gc56ihfcTE5WOI8Y/h48I0zl49Jva5x1H1Yc5JLk6XPvYsN305iUnqPV1orqhcFblpebhRP77lqAtf+nKSmqFdhPjZEs/tNNSFnT56Cj6aE1Ib+MjLR6nq56P6+Qkf0fOhOhjrScOc1efaFx/r1wk+8qkTPVf1MU/hYz0vJn26wEd+wUdewUdewUdewUdewUdewUdeGQNDj+FYx3VVhh57fAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAGPkDUbjizECcAAA=
+  </data>
+ </layer>
+ <layer name="Objects" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu2aOZYTQQyG3cFE3AG4ACTcAUjhPfb1CN0hEcPOEconmGGHmEMAITF3AELkQPD7H5W77V5ceP7vPb22e62SVCWVumczUTJ1NZvNTRqTVC0f8/2LbV3F1w+Nt8Ofjf9T9a+9uK+BdqI0cH4d9K8UGmhrDbpG3fu2od+l9mkMpuprTb41zzy3Jpu4HXcN14frBMfhFP11f59qDioZnhMa8MF6R/2vdDBOuR1StTw/+LgR04Bzss/ficbMcYNzKob1w1v25VxczJGq5XxuVWzdFa6ZXDe5YXLT5BYcw5zWJbIL5iJphf2QTeeaXY8fD032TT6ZPDZ5Asfcv3EORz3iumJd1plvML/a9bznwOTQ5LvJa5M3mfNwDTfv4P9tbHL9OuNPrMem847boc/YFDGuS/T1tjUG57q7Ht+nwHXKtaxUdVtXcB4n+sH5Gtcc2+agBHYsAfeh/z0f59pwXXXXdQm1k3nQ1nXadNvkjsldk3sm9zPnTeF3WCfkGn2XteO2fXGIes1Tk2cmz01emLwMzlmVS37u9/i/sB7RFl39fmp7jFHXfGvyzuS9yQeTj3S8ra7xo8ez0e85hiNc182NlylzXaz7TPlMftfAujrRoy14Px8Pub6h7nPxZB7YaAxwDh3CFl3vEcVT1sG5DduDNUmuweA8hXlK27u3MW2RgvYNYY8ol4yI1gELhhqbeB/Xc/ReHeeltrr6mDkHx7K+z0If53cHUd2a7RHNVT9Nfpn83qA9/qyHtt03eQT3jr7P4FiT6+NY4Bgegug9xILoe5Wu9dKTds4pk9MbtNF1emDbQ5NXQTuwrTg35OwxZlwdsoac+66G33li37vk0n3s4X37YtuvJt/gHry2jXQR6aaUdTDH21y9AY/z9yt4TddvN4awB8P+UlP7/Nro+m2vzb0NuBbhNrGN2Daof1wTYw6Ro+98FeWt3EZsx1DvWcaCv5XzfXwOk/smkPPKthpFH3twG6M6u//HsVrq92XoVxyj+Tz+/gB9jnPNRP9XMZQ9cH2OtolqECW+B0QfwTyV11VuH/Yt/5/odzQ+VjGUPbhfc+gbU+K78tyaNKohYK4UrbPwWE36aGNoe3Cbc3lgSeMD/QPnK4x/7FepWh4r2MeoXt+V83bNBZOLHa59sLf8//JefF4DbcI5DPtckj0asgXnrejnnL9gHOfaZEM6iL7bwDltk9r2GZOzLedwHOE4VtJ8FekPdYexGce4X5urZaPtonoux9VIT124YnK147noD1i/KmXNtyCqL3FswG207ma98toRj0W5TpQHY32ti+9egrmKxyL7AY//knJdXmckanuqjvpVbm0b5beRzRbguTynOay/rnrjOjb3A3+XFjvYJ1E3rNtUHdWh3wP7xDUUtI3Da3uc0zC+oC3WneP53lx75v6WYJeo35Ef+TmJdIO2Q7vkYguva1g/aBfMGfC8VUT1hajuxvmgP2fbRGuLqNZTV8s+xvOwX+tbPJ/v79sob+P78byGbWNyto/qVqj7uoqv3wbcr5z/RG3lWi4fw7GD+/E5Due80TotyksxtuH48ntGfcT7RnbZJpwDYdzG+YFzFR7rUfxnHfM8vgrMq72dufEYXcv5FII25/0lgLpn/43amIsNuXuv0lu0j2uV0RjLxYMoLnPs5v08Dx9nMB5gLHe4xhHNjblY1fX5uXgojtqF1xFcIxg6Ty1lziqZqK7FuYDYHlzDkT22S4nvLIQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBiTP4qFPHVAnAAA
+  </data>
+ </layer>
+ <layer name="Overdraw" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+  </data>
+ </layer>
+ <layer name="OverdrawObjects" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3OyQ2DQAAEQX4YbI5MfHDmHxkTgz8rLVVS/7tpAACoSZseqUt9epbdub13+qRv+qWl7A4AAPztlYY0pinNZXdub01b2tORzrI7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQnQvZ6rVDQJwAAA==
+  </data>
+ </layer>
+</map>
