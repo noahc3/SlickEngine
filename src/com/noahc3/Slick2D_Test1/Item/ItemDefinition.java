@@ -1,22 +1,24 @@
 package com.noahc3.Slick2D_Test1.Item;
 
+import com.noahc3.Slick2D_Test1.Resources.Identifier;
+
 public class ItemDefinition {
 
     String displayName;
-    String registryName;
+    Identifier identifier;
 
-    public ItemDefinition(String registryName) {
-        this.registryName = registryName;
+    public ItemDefinition(Identifier identifier) {
+        this.identifier = identifier;
     }
 
-    public ItemDefinition(String registryName, String displayName) {
-        this.registryName = registryName;
+    public ItemDefinition(Identifier identifier, String displayName) {
+        this.identifier = identifier;
         this.displayName = displayName;
     }
 
     public boolean fits(ItemDefinition in) {
-        if (registryName != null) {
-            if (!registryName.equals(in.registryName)) return false;
+        if (identifier != null) {
+            if (!identifier.equals(in.identifier)) return false;
         }
 
         if (displayName != null) {

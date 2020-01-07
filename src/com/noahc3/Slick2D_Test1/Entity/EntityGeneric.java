@@ -1,34 +1,29 @@
 package com.noahc3.Slick2D_Test1.Entity;
 
-import com.noahc3.Slick2D_Test1.Core.SceneRegistry;
+import com.noahc3.Slick2D_Test1.Core.Registry;
+import com.noahc3.Slick2D_Test1.Resources.IResource;
+import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
-import com.noahc3.Slick2D_Test1.World.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.*;
-import org.newdawn.slick.opengl.*;
 
-public class EntityGeneric implements IEntity{
+public class EntityGeneric implements IEntity, IResource {
 
-    private String registryName;
+    private Identifier identifier;
     private String displayName;
 
     protected int posX;
     protected int posY;
 
-    protected String scene;
+    protected Identifier scene;
 
 
-    public EntityGeneric(String registryName, String displayName) {
-        this.registryName = registryName;
+    public EntityGeneric(Identifier identifier, String displayName) {
+        this.identifier = identifier;
 
         setDisplayName(displayName);
 
-    }
-
-    @Override
-    public String getRegistryName() {
-        return registryName;
     }
 
     @Override
@@ -66,12 +61,12 @@ public class EntityGeneric implements IEntity{
     }
 
     @Override
-    public String getScene() {
+    public Identifier getScene() {
         return scene;
     }
 
     @Override
-    public boolean setScene(String scene) {
+    public boolean setScene(Identifier scene) {
         this.scene = scene;
         return true;
     }
@@ -82,12 +77,12 @@ public class EntityGeneric implements IEntity{
     }
 
     @Override
-    public boolean setScenePosition(int x, int y, String scene) {
+    public boolean setScenePosition(int x, int y, Identifier scene) {
         return setScenePosition(new ScenePoint(x, y, scene));
     }
 
     @Override
-    public boolean setScenePosition(Point point, String scene) {
+    public boolean setScenePosition(Point point, Identifier scene) {
         return setScenePosition(new ScenePoint(point, scene));
     }
 
@@ -95,20 +90,21 @@ public class EntityGeneric implements IEntity{
     public boolean setScenePosition(ScenePoint scenePoint) {
 
         if (scene != null) {
-            SceneRegistry.GetScene(this.scene).removeEntity(this);
+            Registry.SCENES.get(this.scene).removeEntity(this);
+
         }
 
         this.scene = scenePoint.scene;
         this.posX = (int) scenePoint.pos.getX();
         this.posY = (int) scenePoint.pos.getY();
 
-        SceneRegistry.GetScene(this.scene).addEntity(this);
+        Registry.SCENES.get(this.scene).addEntity(this);
 
         return true;
     }
 
     @Override
-    public boolean getPersistence(String scene) {
+    public boolean getPersistence(Identifier scene) {
         return false;
     }
 
@@ -133,7 +129,12 @@ public class EntityGeneric implements IEntity{
     }
 
     @Override
-    public void update(GameContainer gc, String scene, int delta) {
+    public void update(GameContainer gc, Identifier scene, int delta) {
 
+    }
+
+    @Override
+    public Identifier getIdentifier() {
+        return identifier;
     }
 }

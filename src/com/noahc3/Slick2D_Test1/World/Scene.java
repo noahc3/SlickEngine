@@ -3,6 +3,8 @@ package com.noahc3.Slick2D_Test1.World;
 import com.noahc3.Slick2D_Test1.Config.ConfigDebug;
 import com.noahc3.Slick2D_Test1.Entity.IEntity;
 import com.noahc3.Slick2D_Test1.Game;
+import com.noahc3.Slick2D_Test1.Resources.IResource;
+import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.TileUtils;
 import org.newdawn.slick.Color;
@@ -18,9 +20,9 @@ import org.w3c.dom.css.Rect;
 
 import java.util.ArrayList;
 
-public abstract class Scene {
+public abstract class Scene implements IResource {
 
-    protected String registryName;
+    protected Identifier identifier;
     protected String displayName;
 
     protected TiledMap tileMap;
@@ -30,8 +32,8 @@ public abstract class Scene {
 
     protected ArrayList<IEntity> entities = new ArrayList<>();
 
-    public Scene(String registryName, String displayName) {
-        this.registryName = registryName;
+    public Scene(Identifier identifier, String displayName) {
+        this.identifier = identifier;
         this.displayName = displayName;
     }
 
@@ -75,10 +77,6 @@ public abstract class Scene {
         return blockedColliders;
     }
 
-    public String getRegistryName() {
-        return registryName;
-    }
-
     public String getDisplayName() {
         return displayName;
     }
@@ -114,7 +112,7 @@ public abstract class Scene {
 
         for (int i = 0; i < entities.size(); i++) {
             //if (entities.get(i).getPersistence(this.registryName))
-            entities.get(i).update(gc, this.registryName, delta);
+            entities.get(i).update(gc, this.getIdentifier(), delta);
         }
     }
 
@@ -147,7 +145,7 @@ public abstract class Scene {
 
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i).getScene() != null) {
-                if (entities.get(i).getScene().equals(this.registryName)) {
+                if (entities.get(i).getScene().equals(this.getIdentifier())) {
                     entities.get(i).drawInWorld(gc, g, 0, 0);
                 }
             }
@@ -204,4 +202,8 @@ public abstract class Scene {
 
     }
 
+    @Override
+    public Identifier getIdentifier() {
+        return identifier;
+    }
 }

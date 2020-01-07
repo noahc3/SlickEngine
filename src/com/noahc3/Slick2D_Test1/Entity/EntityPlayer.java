@@ -3,23 +3,20 @@ package com.noahc3.Slick2D_Test1.Entity;
 import com.noahc3.Slick2D_Test1.Config.ConfigControls;
 import com.noahc3.Slick2D_Test1.Container.Container;
 import com.noahc3.Slick2D_Test1.Container.ItemSlot;
-import com.noahc3.Slick2D_Test1.Core.SceneRegistry;
+import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.GUI.GUIAnchorUtility;
 import com.noahc3.Slick2D_Test1.GUI.GUIButtonPrompt;
-import com.noahc3.Slick2D_Test1.GUI.GUIInventory;
 import com.noahc3.Slick2D_Test1.GUI.GUISlot;
 import com.noahc3.Slick2D_Test1.Game;
 import com.noahc3.Slick2D_Test1.Item.BasicItem;
 import com.noahc3.Slick2D_Test1.Item.IItem;
 import com.noahc3.Slick2D_Test1.Resources.Entities;
+import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
-import org.newdawn.slick.tests.xml.Inventory;
-
-import java.util.Arrays;
 
 public class EntityPlayer extends EntityGeneric {
 
@@ -65,8 +62,8 @@ public class EntityPlayer extends EntityGeneric {
 
 
 
-    public EntityPlayer(GameContainer gc, String registryName, String displayName) {
-        super(registryName, displayName);
+    public EntityPlayer(GameContainer gc, String displayName) {
+        super(new Identifier("entityPlayer"), displayName);
 
         configureAnimations();
 
@@ -123,7 +120,7 @@ public class EntityPlayer extends EntityGeneric {
     }
 
     @Override
-    public boolean getPersistence(String scene) {
+    public boolean getPersistence(Identifier scene) {
         return true;
     }
 
@@ -167,7 +164,7 @@ public class EntityPlayer extends EntityGeneric {
     }
 
     @Override
-    public void update(GameContainer gc, String scene, int delta) {
+    public void update(GameContainer gc, Identifier scene, int delta) {
 
 
         if (!Game.sceneChanging) {
@@ -238,7 +235,7 @@ public class EntityPlayer extends EntityGeneric {
 
             Shape boundingBox = getBoundingBox();
 
-            for (Shape n : SceneRegistry.GetScene(getScene()).getColliders()) {
+            for (Shape n : Registry.SCENES.get(getScene()).getColliders()) {
                 if (n.intersects(boundingBox)) {
                     posY = oldY;
                     yMovementCycleLeft = 0;
@@ -258,7 +255,7 @@ public class EntityPlayer extends EntityGeneric {
 
             boundingBox = getBoundingBox();
 
-            for (Shape n : SceneRegistry.GetScene(getScene()).getColliders()) {
+            for (Shape n : Registry.SCENES.get(getScene()).getColliders()) {
                 if (n.intersects(boundingBox)) {
                     posX = oldX;
                     xMovementCycleLeft = 0;
@@ -273,7 +270,7 @@ public class EntityPlayer extends EntityGeneric {
             this.interation = null;
             boolean canInteract = false;
 
-            for(IEntity k : SceneRegistry.GetScene(getScene()).getEntities()) {
+            for(IEntity k : Registry.SCENES.get(getScene()).getEntities()) {
                 if (k instanceof IInteractable) {
                     if (((IInteractable) k).interactionArea() != null) {
                         if (getBoundingBox().intersects(((IInteractable) k).interactionArea())) {

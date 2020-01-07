@@ -2,17 +2,15 @@ package com.noahc3.Slick2D_Test1;
 
 import com.noahc3.Slick2D_Test1.Config.ConfigControls;
 import com.noahc3.Slick2D_Test1.Config.ConfigDebug;
-import com.noahc3.Slick2D_Test1.Core.SceneRegistry;
+import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.Entity.EntityPlayer;
-import com.noahc3.Slick2D_Test1.GUI.GUIButtonPrompt;
 import com.noahc3.Slick2D_Test1.GUI.GUIInventory;
 import com.noahc3.Slick2D_Test1.GUI.GUITextDialogue;
 import com.noahc3.Slick2D_Test1.GUI.IGUIElement;
+import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import com.noahc3.Slick2D_Test1.Utility.TileUtils;
-import com.sun.media.jfxmedia.events.PlayerEvent;
-import javafx.scene.Scene;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;
@@ -20,9 +18,6 @@ import java.util.Arrays;
 
 import com.noahc3.Slick2D_Test1.World.*;
 import org.newdawn.slick.geom.Shape;
-import sun.security.krb5.Config;
-
-import javax.swing.text.Style;
 
 public class Game extends BasicGame {
 
@@ -31,7 +26,7 @@ public class Game extends BasicGame {
     public static final int tickRate = 50; //updates per second
     public static final int scale = 2;
 
-    private static String initScene = "sceneTest";
+    private static Identifier initScene = new Identifier("sceneTest");
 
     public static EntityPlayer player;
 
@@ -62,10 +57,9 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        player = new EntityPlayer(gc,"entityPlayer", "Player1");
-
-        SceneRegistry.RegisterScene(new SceneTest("sceneTest", "Test Scene"));
-        SceneRegistry.RegisterScene(new SceneHouseGeneric1("sceneHouseGeneric1", "Villiage House"));
+        player = new EntityPlayer(gc, "Player1");
+        Registry.SCENES.tryRegister(new SceneTest(new Identifier("sceneTest"), "Test Scene"));
+        Registry.SCENES.tryRegister(new SceneHouseGeneric1(new Identifier("sceneHouseGeneric1"), "Village House"));
 
         player.setScenePosition((int) 550, (int) 250, initScene);
 
@@ -82,7 +76,7 @@ public class Game extends BasicGame {
     @Override
     public void update(GameContainer gc, int delta) throws SlickException {
         AppGameContainer agc = (AppGameContainer) gc;
-        agc.setTitle("SLICK2D TEST GAME | " + SceneRegistry.GetScene(player.getScene()).getDisplayName());
+        agc.setTitle("SLICK2D TEST GAME | " + Registry.SCENES.get(player.getScene()).getDisplayName());
 
         if (gc.getInput().isKeyDown(ConfigControls.menuKey) && !menuKeyHeld) {
             paused = !paused;
@@ -103,7 +97,7 @@ public class Game extends BasicGame {
             }
 
             if (updateEntities) {
-                SceneRegistry.GetScene(player.getScene()).update(gc, delta);
+                Registry.SCENES.get(player.getScene()).update(gc, delta);
             }
 
             if (sceneChanging) {
@@ -154,7 +148,7 @@ public class Game extends BasicGame {
 
         g.scale(scale,scale);
         g.setBackground(org.newdawn.slick.Color.darkGray);
-        SceneRegistry.GetScene(player.getScene()).render(gc, g, (int) player.getPosition().getX(), (int) player.getPosition().getY());
+        Registry.SCENES.get(player.getScene()).render(gc, g, (int) player.getPosition().getX(), (int) player.getPosition().getY());
 
 
         if (Game.sceneChanging) {

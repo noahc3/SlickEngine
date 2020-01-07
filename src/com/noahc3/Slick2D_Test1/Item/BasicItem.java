@@ -6,6 +6,7 @@ import com.noahc3.Slick2D_Test1.Entity.IInteractable;
 import com.noahc3.Slick2D_Test1.Entity.InteractionType;
 import com.noahc3.Slick2D_Test1.GUI.GUITextDialogue;
 import com.noahc3.Slick2D_Test1.Game;
+import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -16,9 +17,10 @@ public class BasicItem implements IItem, IInteractable {
 
     Image texture;
     String displayName;
-    String registryName = "debugItem";
+    Identifier identifier;
 
     public BasicItem(String displayName, Image texture) {
+        this.identifier = new Identifier("itemDebug");
         this.displayName = displayName;
         this.texture = texture;
     }
@@ -82,6 +84,6 @@ public class BasicItem implements IItem, IInteractable {
 
     @Override
     public ItemDefinition getItemDefinition() {
-        return new ItemDefinition(registryName, displayName);
+        return new ItemDefinition(identifier, displayName);
     }
 }

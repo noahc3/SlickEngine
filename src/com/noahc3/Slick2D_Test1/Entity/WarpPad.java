@@ -1,7 +1,9 @@
 package com.noahc3.Slick2D_Test1.Entity;
 
 import com.noahc3.Slick2D_Test1.Config.ConfigControls;
+import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.Game;
+import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
@@ -27,8 +29,8 @@ public class WarpPad extends EntityGeneric implements IInteractable {
 
     String interactionText;
 
-    public WarpPad(String registryName, String displayName, Point2D location, ScenePoint destination, boolean needsInteraction, String interactionText, boolean invisible) {
-        super(registryName, displayName);
+    public WarpPad(Point2D location, ScenePoint destination, boolean needsInteraction, String interactionText, boolean invisible) {
+        super(new Identifier("entityWarpPad"), "WARPPAD");
 
         this.destination = destination;
         this.invisible = invisible;
@@ -72,7 +74,7 @@ public class WarpPad extends EntityGeneric implements IInteractable {
     }
 
     @Override
-    public void update(GameContainer gc, String scene, int delta) {
+    public void update(GameContainer gc, Identifier scene, int delta) {
 
         //System.out.println(getBoundingBox().getX() + " " + getBoundingBox().getY() + " " + getBoundingBox().getWidth() + " " + getBoundingBox().getHeight());
 
