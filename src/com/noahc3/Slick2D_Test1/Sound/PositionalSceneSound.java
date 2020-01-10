@@ -1,17 +1,21 @@
 package com.noahc3.Slick2D_Test1.Sound;
 
+import com.noahc3.Slick2D_Test1.Core.ITickable;
+import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.Event.Events;
 import com.noahc3.Slick2D_Test1.Game;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Point;
 
-public class PositionalSceneSound extends SceneSound {
+public class PositionalSceneSound extends SceneSound implements ITickable {
     protected Point position;
     public PositionalSceneSound(SoundResource res, float pitch, float volume, ScenePoint scenePoint, boolean persistent) {
         super(res, pitch, volume, scenePoint.scene, persistent);
         this.position = scenePoint.pos;
+        Registry.SCENES.get(scene).registerTickable(this);
         play(pitch, volume);
     }
 
@@ -23,8 +27,14 @@ public class PositionalSceneSound extends SceneSound {
             return true;
         } else {
             stop();
-            if (!persistent) Events.SceneChangedListeners.remove(this);
+            if (!persistent) {
+                Events.SceneChangedListeners.remove(this);
+                Registry.SCENES.get(scene).unregisterTickable(this);
+            }
             return false;
         }
     }
+
+    @Override
+    public void tick(GameContainer gc, int delta) {    }
 }

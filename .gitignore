@@ -1,0 +1,4 @@
+lib/slick2d/dist/**
+lib/slick2d/javadoc/**
+lib/slick2d/target/**
+lib/slick2d/src/version

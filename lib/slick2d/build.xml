@@ -321,7 +321,7 @@
 	</zip>
 </target>
 
-<target name="dist" depends="build-slick, build-examples, javadoc">
+<target name="dist" depends="build-slick, javadoc">
 	<zip destfile="${dist}/slick.zip">
 	    <fileset dir="." includes="javadoc/**"/>
 	    <fileset dir="." includes="src/org/newdawn/slick/**"/>

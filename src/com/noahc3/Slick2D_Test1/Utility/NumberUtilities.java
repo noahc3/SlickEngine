@@ -26,7 +26,7 @@ public class NumberUtilities {
         return input;
     }
 
-    public Point GetNormalizedDifference(Point a, Point b, float maxDistance) {
+    public Point normalizeDifference(Point a, Point b, float maxDistance) {
         float dx = b.getX() - a.getX();
         float dy = b.getY() - a.getY();
 
@@ -34,5 +34,10 @@ public class NumberUtilities {
         float ny = clamp(dy / maxDistance, -1, 1);
 
         return new Point(nx, ny);
+    }
+
+    public float getDistance(Point a, Point b) {
+        Line line = new Line(a.getX(), a.getY(), b.getX(), b.getY());
+        return line.length();
     }
 }

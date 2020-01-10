@@ -1,6 +1,7 @@
 package com.noahc3.Slick2D_Test1.World;
 
 import com.noahc3.Slick2D_Test1.Config.ConfigDebug;
+import com.noahc3.Slick2D_Test1.Core.ITickable;
 import com.noahc3.Slick2D_Test1.Entity.IEntity;
 import com.noahc3.Slick2D_Test1.Game;
 import com.noahc3.Slick2D_Test1.Resources.IResource;
@@ -31,6 +32,7 @@ public abstract class Scene implements IResource {
     protected ArrayList<Shape> blockedColliders = new ArrayList<>();
 
     protected ArrayList<IEntity> entities = new ArrayList<>();
+    protected ArrayList<ITickable> sceneTickable = new ArrayList<>();
 
     public Scene(Identifier identifier, String displayName) {
         this.identifier = identifier;
@@ -100,6 +102,14 @@ public abstract class Scene implements IResource {
         } else return false;
     }
 
+    public void registerTickable(ITickable k) {
+        sceneTickable.add(k);
+    }
+
+    public void unregisterTickable(ITickable k) {
+        sceneTickable.remove(k);
+    }
+
     public ArrayList<IEntity> getEntities() {
         return entities;
     }
@@ -113,6 +123,10 @@ public abstract class Scene implements IResource {
         for (int i = 0; i < entities.size(); i++) {
             //if (entities.get(i).getPersistence(this.registryName))
             entities.get(i).update(gc, this.getIdentifier(), delta);
+        }
+
+        for(int i = 0; i < sceneTickable.size(); i++) {
+            sceneTickable.get(i).tick(gc, delta);
         }
     }
 
