@@ -4,15 +4,20 @@ import com.noahc3.Slick2D_Test1.Config.ConfigControls;
 import com.noahc3.Slick2D_Test1.Config.ConfigDebug;
 import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.Entity.EntityPlayer;
+import com.noahc3.Slick2D_Test1.Event.Events;
+import com.noahc3.Slick2D_Test1.Event.SceneChangedListener;
 import com.noahc3.Slick2D_Test1.GUI.GUIInventory;
 import com.noahc3.Slick2D_Test1.GUI.GUITextDialogue;
 import com.noahc3.Slick2D_Test1.GUI.IGUIElement;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
+import com.noahc3.Slick2D_Test1.Sound.SoundCategory;
+import com.noahc3.Slick2D_Test1.Sound.SoundResource;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import com.noahc3.Slick2D_Test1.Utility.TileUtils;
 import org.newdawn.slick.*;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -58,9 +63,13 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer gc) throws SlickException {
         player = new EntityPlayer(gc, "Player1");
+
+        Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneTest"), SoundCategory.MUSIC));
+        Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneHouseGeneric1"), SoundCategory.MUSIC));
+        Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.fountain"), SoundCategory.EFFECTS));
+
         Registry.SCENES.tryRegister(new SceneTest(new Identifier("sceneTest"), "Test Scene"));
         Registry.SCENES.tryRegister(new SceneHouseGeneric1(new Identifier("sceneHouseGeneric1"), "Village House"));
-
         player.setScenePosition((int) 550, (int) 250, initScene);
 
         gc.setMinimumLogicUpdateInterval(1000/tickRate);
@@ -70,6 +79,8 @@ public class Game extends BasicGame {
         smallFont = new TrueTypeFont(new java.awt.Font("Segoe UI", 0, 14), true);
         bigFont = new TrueTypeFont(new java.awt.Font("Segoe UI", 0, 30), true);
         dialogueFont = new TrueTypeFont(new java.awt.Font("Manaspace", 0, 30), false);
+
+        Events.SceneChanged(Registry.SCENES.get(player.getScene()));
 
     }
 
@@ -117,6 +128,9 @@ public class Game extends BasicGame {
                 }
                 if (fadeValue == 0) {
                     Game.sceneChanging = false;
+                    Scene scene = Registry.SCENES.get(player.getScene());
+                    scene.onFinishedLoading();
+                    Events.SceneChanged(scene);
                 }
             }
 

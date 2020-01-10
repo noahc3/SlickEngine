@@ -4,6 +4,7 @@ import com.noahc3.Slick2D_Test1.Entity.WarpPad;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Resources.Tilemaps;
 import com.noahc3.Slick2D_Test1.Resources.Tilesets;
+import com.noahc3.Slick2D_Test1.Sound.SoundPlayer;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import org.newdawn.slick.SlickException;
@@ -16,6 +17,8 @@ public class SceneHouseGeneric1 extends Scene{
 
         try {
             this.tileMap = new TiledMap(Tilemaps.HOUSE_GENERIC_1, Tilesets.tilesets);
+            System.out.println("id: " + getIdentifier());
+            SoundPlayer.playSceneSound(new Identifier("sound.music.sceneHouseGeneric1"), 1.0f, 1.0f, getIdentifier(), true);
         } catch (SlickException ex) {
             System.err.println(ex.getMessage());
         }

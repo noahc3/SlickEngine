@@ -202,6 +202,10 @@ public abstract class Scene implements IResource {
 
     }
 
+    public void onFinishedLoading() {
+
+    }
+
     @Override
     public Identifier getIdentifier() {
         return identifier;
