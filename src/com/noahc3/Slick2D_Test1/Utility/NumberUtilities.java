@@ -25,19 +25,4 @@ public class NumberUtilities {
         if (input < min) return min;
         return input;
     }
-
-    public Point normalizeDifference(Point a, Point b, float maxDistance) {
-        float dx = b.getX() - a.getX();
-        float dy = b.getY() - a.getY();
-
-        float nx = clamp(dx / maxDistance, -1, 1);
-        float ny = clamp(dy / maxDistance, -1, 1);
-
-        return new Point(nx, ny);
-    }
-
-    public float getDistance(Point a, Point b) {
-        Line line = new Line(a.getX(), a.getY(), b.getX(), b.getY());
-        return line.length();
-    }
 }

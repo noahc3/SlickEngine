@@ -4,7 +4,7 @@ import java.lang.invoke.VolatileCallSite;
 
 public enum SoundCategory {
 
-    MUSIC("music", 0.5f),
+    MUSIC("music", 1.0f),
     EFFECTS("effects", 1.0f);
 
     private final String name;

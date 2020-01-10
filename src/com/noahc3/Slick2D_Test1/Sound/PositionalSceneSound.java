@@ -10,12 +10,11 @@ import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Point;
 
-public class PositionalSceneSound extends SceneSound implements ITickable {
+public class PositionalSceneSound extends SceneSound {
     protected Point position;
     public PositionalSceneSound(SoundResource res, float pitch, float volume, ScenePoint scenePoint, boolean persistent) {
         super(res, pitch, volume, scenePoint.scene, persistent);
         this.position = scenePoint.pos;
-        Registry.SCENES.get(scene).registerTickable(this);
         play(pitch, volume);
     }
 
@@ -27,14 +26,8 @@ public class PositionalSceneSound extends SceneSound implements ITickable {
             return true;
         } else {
             stop();
-            if (!persistent) {
-                Events.SceneChangedListeners.remove(this);
-                Registry.SCENES.get(scene).unregisterTickable(this);
-            }
+            if (!persistent) Events.SceneChangedListeners.remove(this);
             return false;
         }
     }
-
-    @Override
-    public void tick(GameContainer gc, int delta) {    }
 }

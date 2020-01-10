@@ -22,8 +22,8 @@ public class SceneTest extends Scene {
             this.tileMap = new TiledMap(Tilemaps.TEST_1, Tilesets.tilesets);
             entities.add(new WarpPad(new Point2D(544, 139), new ScenePoint(198, 322, new Identifier("sceneHouseGeneric1")), true, "Enter", true));
             entities.add(new EntityItem(new Point2D(500, 139), new BasicItem("test", new Image("/assets/textures/debug.png"))));
-            SoundPlayer.playSceneSound(new Identifier("sound.music.sceneTest"), 1.0f, 0.0f, getIdentifier(), true);
-            SoundPlayer.playPositionalSceneSound(new Identifier("sound.effect.fountain"), 1.0f, 1.0f, new ScenePoint(968, 364, getIdentifier()), true);
+            SoundPlayer.playSceneSound(new Identifier("sound.music.sceneTest"), 1.0f, 100.0f, getIdentifier(), true);
+            SoundPlayer.playPositionalSceneSound(new Identifier("sound.effect.fountain"), 1.0f, 30.0f, new ScenePoint(968, 364, getIdentifier()), true);
         } catch (SlickException ex) {
             System.err.println(ex.getMessage());
         }

@@ -13,6 +13,7 @@ import com.noahc3.Slick2D_Test1.Item.IItem;
 import com.noahc3.Slick2D_Test1.Resources.Entities;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
+import org.lwjgl.openal.AL10;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
@@ -168,6 +169,8 @@ public class EntityPlayer extends EntityGeneric {
 
 
         if (!Game.sceneChanging) {
+
+            AL10.alListener3f(AL10.AL_POSITION, posX, posY, 0);
 
             Animation anim;
 
