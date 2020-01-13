@@ -18,17 +18,17 @@ public class BasicItem implements IItem, IInteractable {
     Image texture;
     String displayName;
     Identifier identifier;
+    Identifier pickupSound;
 
-    public BasicItem(String displayName, Image texture) {
+    public BasicItem(String displayName, Image texture, Identifier pickupSound) {
         this.identifier = new Identifier("itemDebug");
         this.displayName = displayName;
         this.texture = texture;
+        this.pickupSound = pickupSound;
     }
 
-
-
     @Override
-        public void drawOnScreen(Graphics g, int x, int y, int width, int height) {
+    public void drawOnScreen(Graphics g, int x, int y, int width, int height) {
             texture.draw(x, y, width, height);
     }
 
@@ -85,5 +85,10 @@ public class BasicItem implements IItem, IInteractable {
     @Override
     public ItemDefinition getItemDefinition() {
         return new ItemDefinition(identifier, displayName);
+    }
+
+    @Override
+    public Identifier getPickupSound() {
+        return pickupSound;
     }
 }

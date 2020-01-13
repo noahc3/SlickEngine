@@ -1,6 +1,7 @@
 package com.noahc3.Slick2D_Test1.Item;
 
 import com.noahc3.Slick2D_Test1.Entity.EntityPlayer;
+import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -10,4 +11,5 @@ public interface IItem {
     String getDisplayName();
     void update(GameContainer gc, int delta);
     ItemDefinition getItemDefinition();
+    Identifier getPickupSound();
 }

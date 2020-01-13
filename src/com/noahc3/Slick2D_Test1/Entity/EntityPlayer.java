@@ -72,7 +72,7 @@ public class EntityPlayer extends EntityGeneric {
         posY = 0;
         IItem item = null;
         try {
-            item = new BasicItem("Test Item", new Image("/assets/textures/debug.png"));
+            item = new BasicItem("Test Item", new Image("/assets/textures/debug.png"), new Identifier("sound.effect.pickup"));
         } catch (SlickException e) {
             System.err.println(e.getMessage());
         }

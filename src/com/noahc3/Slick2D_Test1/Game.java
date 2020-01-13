@@ -67,6 +67,8 @@ public class Game extends BasicGame {
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneTest"), SoundCategory.MUSIC));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneHouseGeneric1"), SoundCategory.MUSIC));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.fountain"), SoundCategory.EFFECTS));
+        Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.door"), SoundCategory.EFFECTS));
+        Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.pickup"), SoundCategory.EFFECTS));
 
         Registry.SCENES.tryRegister(new SceneTest(new Identifier("sceneTest"), "Test Scene"));
         Registry.SCENES.tryRegister(new SceneHouseGeneric1(new Identifier("sceneHouseGeneric1"), "Village House"));

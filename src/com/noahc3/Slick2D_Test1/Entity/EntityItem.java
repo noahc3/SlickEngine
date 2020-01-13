@@ -4,6 +4,7 @@ import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.Game;
 import com.noahc3.Slick2D_Test1.Item.IItem;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
+import com.noahc3.Slick2D_Test1.Sound.SoundPlayer;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.TileUtils;
 import org.newdawn.slick.GameContainer;
@@ -56,7 +57,10 @@ public class EntityItem extends EntityGeneric {
     @Override
     public void update(GameContainer gc, Identifier scene, int delta) {
         if (getBoundingBox().intersects(Game.player.getBoundingBox())) {
-            if (Game.player.inventory.TryInsert(item) == null) Registry.SCENES.get(Game.player.getScene()).removeEntity(this);
+            if (Game.player.inventory.TryInsert(item) == null) {
+                Registry.SCENES.get(Game.player.getScene()).removeEntity(this);
+                SoundPlayer.playEverywhere(item.getPickupSound(), 1.0f, 100.0f);
+            }
         }
     }
 }

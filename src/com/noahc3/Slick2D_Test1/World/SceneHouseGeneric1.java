@@ -25,7 +25,7 @@ public class SceneHouseGeneric1 extends Scene{
 
         generateCollisions(16, 0, 1432);
 
-        entities.add(new WarpPad(new Point2D(192, 335), new ScenePoint(554, 175, new Identifier("sceneTest")), false, "", true));
+        entities.add(new WarpPad(new Point2D(192, 335), new ScenePoint(554, 175, new Identifier("sceneTest")), false, "", new Identifier("sound.effect.door"),true));
 
         //SceneRegistry.RegisterScene(this);
     }

@@ -4,8 +4,10 @@ import com.noahc3.Slick2D_Test1.Config.ConfigControls;
 import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.Game;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
+import com.noahc3.Slick2D_Test1.Sound.SoundPlayer;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
+import com.sun.corba.se.spi.ior.IdentifiableFactory;
 import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,19 +19,21 @@ import org.newdawn.slick.opengl.Texture;
 
 public class WarpPad extends EntityGeneric implements IInteractable {
 
-    ScenePoint destination;
+    protected ScenePoint destination;
 
-    Image sprite;
-    boolean invisible;
+    protected Image sprite;
+    protected boolean invisible;
 
-    int width = 16;
-    int height = 16;
+    protected int width = 16;
+    protected int height = 16;
 
-    boolean needsInteraction;
+    protected boolean needsInteraction;
 
-    String interactionText;
+    protected String interactionText;
 
-    public WarpPad(Point2D location, ScenePoint destination, boolean needsInteraction, String interactionText, boolean invisible) {
+    protected Identifier interactionSoundEffect;
+
+    public WarpPad(Point2D location, ScenePoint destination, boolean needsInteraction, String interactionText, Identifier interactionSoundEffect, boolean invisible) {
         super(new Identifier("entityWarpPad"), "WARPPAD");
 
         this.destination = destination;
@@ -40,6 +44,7 @@ public class WarpPad extends EntityGeneric implements IInteractable {
         this.needsInteraction = needsInteraction;
         this.interactionText = interactionText;
 
+        this.interactionSoundEffect = interactionSoundEffect;
     }
 
     public ScenePoint getDestination() {
@@ -81,6 +86,7 @@ public class WarpPad extends EntityGeneric implements IInteractable {
         if (!Game.sceneChanging) {
             if (!needsInteraction) {
                 if (getBoundingBox().intersects(Game.player.getBoundingBox())) {
+                    if (interactionSoundEffect != null) SoundPlayer.playEverywhere(interactionSoundEffect, 1.0f, 100.0f);
                     Game.player.changeScene(destination);
                 }
             }
@@ -112,6 +118,7 @@ public class WarpPad extends EntityGeneric implements IInteractable {
         if (!Game.sceneChanging) {
             if (needsInteraction) {
                 if (getBoundingBox().intersects(Game.player.getBoundingBox())) {
+                    if (interactionSoundEffect != null) SoundPlayer.playEverywhere(interactionSoundEffect, 1.0f, 100.0f);
                     Game.player.changeScene(destination);
                 }
             }
