@@ -5,11 +5,12 @@ import com.noahc3.Slick2D_Test1.Config.ConfigDebug;
 import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.Entity.EntityPlayer;
 import com.noahc3.Slick2D_Test1.Event.Events;
-import com.noahc3.Slick2D_Test1.Event.SceneChangedListener;
-import com.noahc3.Slick2D_Test1.GUI.GUIInventory;
+import com.noahc3.Slick2D_Test1.GUI.FontResource;
+import com.noahc3.Slick2D_Test1.GUI.GUIPlayerInventory;
 import com.noahc3.Slick2D_Test1.GUI.GUITextDialogue;
 import com.noahc3.Slick2D_Test1.GUI.IGUIElement;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
+import com.noahc3.Slick2D_Test1.Resources.ImageResource;
 import com.noahc3.Slick2D_Test1.Sound.SoundCategory;
 import com.noahc3.Slick2D_Test1.Sound.SoundResource;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
@@ -17,12 +18,17 @@ import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import com.noahc3.Slick2D_Test1.Utility.TileUtils;
 import org.newdawn.slick.*;
 
-import java.sql.SQLOutput;
+import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.noahc3.Slick2D_Test1.World.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.openal.SoundStore;
 
 public class Game extends BasicGame {
 
@@ -53,7 +59,7 @@ public class Game extends BasicGame {
     private static boolean menuKeyHeld = false;
 
     public static boolean paused = false;
-    private static GUIInventory inventory;
+    private static GUIPlayerInventory inventory;
 
 
     public Game(String title) {
@@ -64,6 +70,15 @@ public class Game extends BasicGame {
     public void init(GameContainer gc) throws SlickException {
         player = new EntityPlayer(gc, "Player1");
 
+        SoundStore.get().setSoundVolume(0.1f);
+
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.default"), "assets/textures/gui/slot/default.png"));
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.highlighted"), "assets/textures/gui/slot/highlighted.png"));
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.overlay_equip"), "assets/textures/gui/slot/overlay_equip.png"));
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.overlay_j"), "assets/textures/gui/slot/overlay_j.png"));
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.overlay_k"), "assets/textures/gui/slot/overlay_k.png"));
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.overlay_l"), "assets/textures/gui/slot/overlay_l.png"));
+
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneTest"), SoundCategory.MUSIC));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneHouseGeneric1"), SoundCategory.MUSIC));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.fountain"), SoundCategory.EFFECTS));
@@ -72,6 +87,9 @@ public class Game extends BasicGame {
 
         Registry.SCENES.tryRegister(new SceneTest(new Identifier("sceneTest"), "Test Scene"));
         Registry.SCENES.tryRegister(new SceneHouseGeneric1(new Identifier("sceneHouseGeneric1"), "Village House"));
+
+        Registry.FONTS.tryRegister(new FontResource(new Identifier("font.header"), java.awt.Font.TRUETYPE_FONT, "assets/font/vecna.ttf", java.awt.Font.BOLD, 30.0f, false));
+
         player.setScenePosition((int) 550, (int) 250, initScene);
 
         gc.setMinimumLogicUpdateInterval(1000/tickRate);
@@ -79,7 +97,7 @@ public class Game extends BasicGame {
         gc.setVSync(true);
 
         smallFont = new TrueTypeFont(new java.awt.Font("Segoe UI", 0, 14), true);
-        bigFont = new TrueTypeFont(new java.awt.Font("Segoe UI", 0, 30), true);
+        bigFont = new TrueTypeFont(new java.awt.Font("Vecna", java.awt.Font.BOLD, 24), true);
         dialogueFont = new TrueTypeFont(new java.awt.Font("Manaspace", 0, 30), false);
 
         Events.SceneChanged(Registry.SCENES.get(player.getScene()));
@@ -94,7 +112,7 @@ public class Game extends BasicGame {
         if (gc.getInput().isKeyDown(ConfigControls.menuKey) && !menuKeyHeld) {
             paused = !paused;
             if (paused) {
-                inventory = new GUIInventory(player.inventory, "Inventory", gc.getWidth() / 2 - 180, gc.getHeight() / 2 - 106, 5, 3);
+                inventory = new GUIPlayerInventory(player.inventory, "INVENTORY", new Point2D(gc.getWidth() / 2 - 224, gc.getHeight() / 2 - 194));
                 GUIRenderQueue.add(inventory);
             }
             else inventory.flagDeletion();
@@ -147,7 +165,7 @@ public class Game extends BasicGame {
 
             if (!Arrays.equals(inventory.getItems(), player.inventory.GetItems())) {
                 inventory.flagDeletion();
-                inventory = new GUIInventory(player.inventory, "Inventory", gc.getWidth() / 2 - 180, gc.getHeight() / 2 - 106, 5, 3);
+                inventory = new GUIPlayerInventory(player.inventory, "INVENTORY", new Point2D(gc.getWidth() / 2 - 224, gc.getHeight() / 2 - 194));
                 GUIRenderQueue.add(inventory);
             }
         }

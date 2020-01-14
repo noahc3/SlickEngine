@@ -11,8 +11,12 @@ public class ConfigControls {
     public static int movement_Right = Input.KEY_D;
 
 
-    public static int interact_Primary = Input.KEY_J;
+    public static int interact_Primary = Input.KEY_I;
     public static int interact_Secondary = Input.MOUSE_RIGHT_BUTTON;
+
+    public static int item_A = Input.KEY_J;
+    public static int item_B = Input.KEY_K;
+    public static int item_C = Input.KEY_L;
 
     public static int menuKey = Input.KEY_ESCAPE;
 

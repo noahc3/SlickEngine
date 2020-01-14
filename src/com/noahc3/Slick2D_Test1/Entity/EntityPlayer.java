@@ -12,6 +12,7 @@ import com.noahc3.Slick2D_Test1.Item.BasicItem;
 import com.noahc3.Slick2D_Test1.Item.IItem;
 import com.noahc3.Slick2D_Test1.Resources.Entities;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
+import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import org.lwjgl.openal.AL10;
 import org.newdawn.slick.*;
@@ -40,7 +41,7 @@ public class EntityPlayer extends EntityGeneric {
 
     boolean init = true; //TODO: Implement initialization for all entities properly
 
-    ItemSlot equipedItem = new ItemSlot();
+    //ItemSlot equipedItem = new ItemSlot();
 
     public Container inventory = new Container(15);
 
@@ -59,10 +60,6 @@ public class EntityPlayer extends EntityGeneric {
     boolean holdingPrimaryInteraction = false;
     boolean holdingSecondaryInteraction = false;
 
-
-
-
-
     public EntityPlayer(GameContainer gc, String displayName) {
         super(new Identifier("entityPlayer"), displayName);
 
@@ -78,7 +75,6 @@ public class EntityPlayer extends EntityGeneric {
         }
 
         inventory.TryInsert(item);
-        equipedItem = inventory.GetSlot(0);
     }
 
     private void configureAnimations() {
@@ -154,8 +150,15 @@ public class EntityPlayer extends EntityGeneric {
             anim.draw((gc.getWidth() / (2 * Game.scale)) - (anim.getWidth() / 2), (gc.getHeight() / (2 * Game.scale)) - (anim.getHeight() / 2));
         }
 
-        if (equipedItem != null) {
-            Game.GUIRenderQueue.add(new GUISlot("test", equipedItem, GUIAnchorUtility.GetAnchoredScreenPosition(gc, 48, 48, 20, 20, 6)));
+        for(int i = 0; i < 3; i++) {
+            //HACK
+            Identifier overlay;
+            switch(i) {
+                default: case 0: overlay = new Identifier("texture.gui.slot.overlay_j"); break;
+                case 1: overlay = new Identifier("texture.gui.slot.overlay_k"); break;
+                case 2: overlay = new Identifier("texture.gui.slot.overlay_l"); break;
+            }
+            Game.GUIRenderQueue.add(new GUISlot("hotbar " + i, inventory.GetSlot(i), new Point2D(gc.getWidth() - ((3 - i) * 69), 5), new Identifier("texture.gui.slot.default"), new Identifier("texture.gui.slot.highlighted"), overlay, false));
         }
 
         if (this.interation != null) {
@@ -266,9 +269,7 @@ public class EntityPlayer extends EntityGeneric {
                 }
             }
 
-            if (equipedItem.GetItem() != null) equipedItem.GetItem().update(gc, delta);
-
-            //TODO check if this works in C# ((cast) k).castMethod();
+            for(IItem k : inventory.GetItems()) if (k != null) k.update(gc, delta);
 
             this.interation = null;
             boolean canInteract = false;
@@ -286,16 +287,14 @@ public class EntityPlayer extends EntityGeneric {
                 }
             }
 
-            if (!canInteract) {
-                IItem item = equipedItem.GetItem();
-
-                if (item != null) {
-                    if (item instanceof IInteractable) {
-                        if(((IInteractable) item).needsInteraction(this) && ((IInteractable) item).canInteract(this)) {
-                            this.interation = (IInteractable) item;
-                        }
-                    }
-                }
+            //if an item interaction occurs, set this.interaction to null to prevent undefined behaviour
+            //when trying to interact with an item and a world entity at the same time.
+            if (gc.getInput().isKeyDown(ConfigControls.item_A) && !this.holdingPrimaryInteraction) {
+                if(tryItemInteraction(gc, inventory.GetSlot(0).GetItem())) this.interation = null;
+            } else if (gc.getInput().isKeyDown(ConfigControls.item_B) && !this.holdingPrimaryInteraction) {
+                if(tryItemInteraction(gc, inventory.GetSlot(1).GetItem())) this.interation = null;
+            } else if (gc.getInput().isKeyDown(ConfigControls.item_C) && !this.holdingPrimaryInteraction) {
+                if(tryItemInteraction(gc, inventory.GetSlot(2).GetItem())) this.interation = null;
             }
 
             if (this.interation != null) {
@@ -320,5 +319,17 @@ public class EntityPlayer extends EntityGeneric {
         } else {
 
         }
+    }
+
+    private boolean tryItemInteraction(GameContainer gc, IItem item) {
+        if (item != null) {
+            if (item instanceof IInteractable) {
+                if(((IInteractable) item).needsInteraction(this) && ((IInteractable) item).canInteract(this)) {
+                    ((IInteractable) item).interact(gc, this);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
