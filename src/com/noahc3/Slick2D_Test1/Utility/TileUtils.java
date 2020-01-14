@@ -20,6 +20,10 @@ public class TileUtils {
         return new Point2D((int)(x - Game.player.getPosition().getX() + ((gc.getWidth() / 2) / Game.scale)), (int)(y - Game.player.getPosition().getY() + ((gc.getHeight() / 2) / Game.scale)));
     }
 
+    public static Point WorldToScreen(GameContainer gc, Point point) {
+        return new Point((int)(point.getX() - Game.player.getPosition().getX() + ((gc.getWidth() / 2) / Game.scale)), (int)(point.getY() - Game.player.getPosition().getY() + ((gc.getHeight() / 2) / Game.scale)));
+    }
+
     public static Point2D ScreenToWorld(GameContainer gc, int x, int y) {
         return new Point2D((int) ((x / Game.scale) + Game.player.getPosition().getX() - (gc.getWidth() / (2 * Game.scale))), (int) ((y / Game.scale) + Game.player.getPosition().getY() - (gc.getHeight() / (2 * Game.scale))));
     }

@@ -61,7 +61,7 @@ public class EntityPlayer extends EntityGeneric {
     boolean holdingSecondaryInteraction = false;
 
     public EntityPlayer(GameContainer gc, String displayName) {
-        super(new Identifier("entityPlayer"), displayName);
+        super(new Identifier("entity.player"), displayName);
 
         configureAnimations();
 

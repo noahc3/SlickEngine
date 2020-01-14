@@ -20,4 +20,8 @@ public class ConfigControls {
 
     public static int menuKey = Input.KEY_ESCAPE;
 
+    public static int debug_drawWorldColliders = Input.KEY_NUMPAD1;
+    public static int debug_drawEntityColliders = Input.KEY_NUMPAD2;
+
+    public static int debug_drawEntityPaths = Input.KEY_NUMPAD5;
 }

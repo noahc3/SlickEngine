@@ -79,6 +79,9 @@ public class Game extends BasicGame {
         Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.overlay_k"), "assets/textures/gui/slot/overlay_k.png"));
         Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.overlay_l"), "assets/textures/gui/slot/overlay_l.png"));
 
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.entity.slime.idle"), "assets/textures/entity/slime/idle.png"));
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.entity.slime.jump"), "assets/textures/entity/slime/jump.png"));
+
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneTest"), SoundCategory.MUSIC));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneHouseGeneric1"), SoundCategory.MUSIC));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.fountain"), SoundCategory.EFFECTS));
@@ -108,6 +111,11 @@ public class Game extends BasicGame {
     public void update(GameContainer gc, int delta) throws SlickException {
         AppGameContainer agc = (AppGameContainer) gc;
         agc.setTitle("SLICK2D TEST GAME | " + Registry.SCENES.get(player.getScene()).getDisplayName());
+
+        if (gc.getInput().isKeyPressed(ConfigControls.debug_drawWorldColliders)) ConfigDebug.DRAW_WORLD_COLLIDERS = !ConfigDebug.DRAW_WORLD_COLLIDERS;
+        if (gc.getInput().isKeyPressed(ConfigControls.debug_drawEntityColliders)) ConfigDebug.DRAW_ENTITY_COLLIDERS = !ConfigDebug.DRAW_ENTITY_COLLIDERS;
+        if (gc.getInput().isKeyPressed(ConfigControls.debug_drawEntityPaths)) ConfigDebug.DRAW_ENTITY_PATHS = !ConfigDebug.DRAW_ENTITY_PATHS;
+
 
         if (gc.getInput().isKeyDown(ConfigControls.menuKey) && !menuKeyHeld) {
             paused = !paused;

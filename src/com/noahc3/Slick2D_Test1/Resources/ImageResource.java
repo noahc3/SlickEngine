@@ -12,6 +12,7 @@ public class ImageResource implements IResource {
         this.identifier = identifier;
         this.path = path;
         this.image = new Image(this.path);
+        this.image.setFilter(Image.FILTER_NEAREST);
     }
 
     public Image getImage() {

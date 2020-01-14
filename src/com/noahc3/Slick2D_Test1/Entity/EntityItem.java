@@ -6,6 +6,7 @@ import com.noahc3.Slick2D_Test1.Item.IItem;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
 import com.noahc3.Slick2D_Test1.Sound.SoundPlayer;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
+import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import com.noahc3.Slick2D_Test1.Utility.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,14 +18,14 @@ public class EntityItem extends EntityGeneric {
 
     IItem item;
 
-    public EntityItem(Point2D pos, IItem item) {
+    public EntityItem(ScenePoint scenePoint, IItem item) {
         super(new Identifier("entityItem"), item.getDisplayName());
 
-        this.posX = pos.x;
-        this.posY = pos.y;
+        this.posX = (int) scenePoint.pos.getX();
+        this.posY = (int) scenePoint.pos.getY();
         this.item = item;
 
-        this.scene = new Identifier("sceneTest");
+        this.scene = scenePoint.scene;
     }
 
 
