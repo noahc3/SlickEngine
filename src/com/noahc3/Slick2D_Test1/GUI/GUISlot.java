@@ -57,7 +57,7 @@ public class GUISlot implements IGUIElement, IInteractable {
             //g.fill(interactionArea());
             Color oc = g.getColor();
             g.setColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0.5f));
-            g.fillRect(location.x + 8, location.y + 8, 48, 48);
+            g.fillRect(location.x + 12, location.y + 12, 40, 40);
             g.setColor(oc);
         }
 
