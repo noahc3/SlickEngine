@@ -1,6 +1,7 @@
 package com.noahc3.Slick2D_Test1.Item;
 
 import com.noahc3.Slick2D_Test1.Config.ConfigControls;
+import com.noahc3.Slick2D_Test1.Core.Registry;
 import com.noahc3.Slick2D_Test1.Entity.EntityPlayer;
 import com.noahc3.Slick2D_Test1.Entity.IInteractable;
 import com.noahc3.Slick2D_Test1.Entity.InteractionType;
@@ -20,10 +21,10 @@ public class BasicItem implements IItem, IInteractable {
     Identifier identifier;
     Identifier pickupSound;
 
-    public BasicItem(String displayName, Image texture, Identifier pickupSound) {
-        this.identifier = new Identifier("itemDebug");
+    public BasicItem(String displayName, Identifier texture, Identifier pickupSound) {
+        this.identifier = new Identifier("item.noname");
         this.displayName = displayName;
-        this.texture = texture;
+        this.texture = Registry.IMAGES.get(texture).getImage();
         this.pickupSound = pickupSound;
     }
 

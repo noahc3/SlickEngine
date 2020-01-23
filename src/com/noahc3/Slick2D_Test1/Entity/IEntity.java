@@ -18,6 +18,10 @@ public interface IEntity {
     public String getDisplayName(); //get localised display name
     public boolean setDisplayName(String displayName); //set localised display name | true if successful
 
+    public EntityCategory getEntityCategory();
+
+    public EntityCollisionType getEntityCollisionType();
+
     public Point getPosition(); //get position in scene (without specifying the scene)
     public boolean setPosition(int x, int y); //set position in scene (without specifying the scene)
     public boolean setPosition(Point point);

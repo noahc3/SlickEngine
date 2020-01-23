@@ -23,7 +23,7 @@ public class SoundPlayer {
     public static PositionalSceneSound playPositionalSceneSound(Identifier sound, float pitch, float volume, ScenePoint scenePoint, boolean persistent) {
         SoundResource res = Registry.SOUNDS.get(sound);
         if (res == null) return null;
-        PositionalSceneSound s = res.playPositional(pitch, volume, scenePoint, persistent);
+        PositionalSceneSound s = res.playPositional(pitch, volume * 5.0f, scenePoint, persistent);
         return s;
     }
 }

@@ -4,14 +4,14 @@ import com.noahc3.Slick2D_Test1.Config.ConfigControls;
 import com.noahc3.Slick2D_Test1.Container.Container;
 import com.noahc3.Slick2D_Test1.Container.ItemSlot;
 import com.noahc3.Slick2D_Test1.Core.Registry;
-import com.noahc3.Slick2D_Test1.GUI.GUIAnchorUtility;
-import com.noahc3.Slick2D_Test1.GUI.GUIButtonPrompt;
-import com.noahc3.Slick2D_Test1.GUI.GUISlot;
+import com.noahc3.Slick2D_Test1.GUI.*;
 import com.noahc3.Slick2D_Test1.Game;
 import com.noahc3.Slick2D_Test1.Item.BasicItem;
 import com.noahc3.Slick2D_Test1.Item.IItem;
 import com.noahc3.Slick2D_Test1.Resources.Entities;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
+import com.noahc3.Slick2D_Test1.Sound.SoundPlayer;
+import com.noahc3.Slick2D_Test1.Utility.NumberUtilities;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
 import org.lwjgl.openal.AL10;
@@ -20,7 +20,7 @@ import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
-public class EntityPlayer extends EntityGeneric {
+public class EntityPlayer extends EntityGeneric implements IHealth {
 
     long lastUpdate = 0;
 
@@ -32,7 +32,7 @@ public class EntityPlayer extends EntityGeneric {
     int step = 1;
     int speed = 2;
 
-    int direction = 1;
+    int direction = 3;
 
     public int width = 13;
     public int height = 23;
@@ -40,6 +40,9 @@ public class EntityPlayer extends EntityGeneric {
     public IItem mouseItem = null;
 
     boolean init = true; //TODO: Implement initialization for all entities properly
+
+    float health = 12.0f;
+    float knockback = 30.0f;
 
     //ItemSlot equipedItem = new ItemSlot();
 
@@ -68,13 +71,13 @@ public class EntityPlayer extends EntityGeneric {
         posX = 0;
         posY = 0;
         IItem item = null;
-        try {
-            item = new BasicItem("Test Item", new Image("/assets/textures/debug.png"), new Identifier("sound.effect.pickup"));
-        } catch (SlickException e) {
-            System.err.println(e.getMessage());
-        }
-
+        item = new BasicItem("Test Item", new Identifier("texture.debug"), new Identifier("sound.effect.pickup"));
         inventory.TryInsert(item);
+    }
+
+    @Override
+    public EntityCategory getEntityCategory() {
+        return EntityCategory.PLAYER;
     }
 
     private void configureAnimations() {
@@ -137,11 +140,10 @@ public class EntityPlayer extends EntityGeneric {
         Animation anim;
         SpriteSheet ss;
 
-        if (direction == 1) anim = anim_walkUp;
-        else if (direction == 2) anim = anim_walkDown;
-        else if (direction == 3) anim = anim_walkRight;
-        else anim = anim_walkLeft;
-        //else if (direction == 4) anim = anim_walkRight;
+        if (direction == 0) anim = anim_walkRight;
+        else if (direction == 3) anim = anim_walkUp;
+        else if (direction == 2) anim = anim_walkLeft;
+        else anim = anim_walkDown;
 
         if (isAnimating) {
             anim.draw((gc.getWidth() / (2 * Game.scale)) - (anim.getWidth() / 2), (gc.getHeight() / (2 * Game.scale)) - (anim.getHeight() / 2));
@@ -177,10 +179,10 @@ public class EntityPlayer extends EntityGeneric {
 
             Animation anim;
 
-            if (direction == 1) anim = anim_walkUp;
-            else if (direction == 2) anim = anim_walkDown;
-            else if (direction == 3) anim = anim_walkRight;
-            else anim = anim_walkLeft;
+            if (direction == 0) anim = anim_walkRight;
+            else if (direction == 3) anim = anim_walkUp;
+            else if (direction == 2) anim = anim_walkLeft;
+            else anim = anim_walkDown;
 
             anim.update(delta);
 
@@ -191,7 +193,7 @@ public class EntityPlayer extends EntityGeneric {
 
             if (gc.getInput().isKeyDown(ConfigControls.movement_Up)) {
                 if (yMovementCycleLeft >= 0) {
-                    direction = 1;
+                    direction = 3;
                 }
                 if (yMovementCycleLeft == 0) {
                     yMovementCycleLeft = step;
@@ -200,7 +202,7 @@ public class EntityPlayer extends EntityGeneric {
             }
             if (gc.getInput().isKeyDown(ConfigControls.movement_Down)) {
                 if (yMovementCycleLeft <= 0) {
-                    direction = 2;
+                    direction = 1;
                 }
                 if (yMovementCycleLeft == 0) {
                     yMovementCycleLeft = -step;
@@ -210,7 +212,7 @@ public class EntityPlayer extends EntityGeneric {
             }
             if (gc.getInput().isKeyDown(ConfigControls.movement_Left)) {
                 if (xMovementCycleLeft <= 0) {
-                    direction = 4;
+                    direction = 2;
                 }
                 if (xMovementCycleLeft == 0) {
                     xMovementCycleLeft = -step;
@@ -220,7 +222,7 @@ public class EntityPlayer extends EntityGeneric {
             }
             if (gc.getInput().isKeyDown(ConfigControls.movement_Right)) {
                 if (xMovementCycleLeft >= 0) {
-                    direction = 3;
+                    direction = 0;
                 }
                 if (xMovementCycleLeft == 0) {
                     xMovementCycleLeft = step;
@@ -331,5 +333,34 @@ public class EntityPlayer extends EntityGeneric {
             }
         }
         return false;
+    }
+
+    @Override
+    public float getHealth() {
+        return health;
+    }
+
+    @Override
+    public float damage(Object sender, float rawDamage) {
+        float oldHealth = health;
+        health = NumberUtilities.clamp(health - rawDamage, 0, health);
+
+        if (sender instanceof IEntity) {
+            if (((IEntity) sender).getEntityCategory().equals(EntityCategory.HOSTILE)) {
+                float[] entityCenter = ((IEntity) sender).getBoundingBox().getCenter();
+                Point knockbackTarget = NumberUtilities.pointAwayFromPoint(this.getPosition(), new Point(entityCenter[0], entityCenter[1]), knockback, true, true);
+                Point pos = getPosition();
+                xMovementCycleLeft += (int)(knockbackTarget.getX() - pos.getX());
+                yMovementCycleLeft -= (int)(knockbackTarget.getY() - pos.getY());
+            }
+        }
+
+        SoundPlayer.playEverywhere(new Identifier("sound.effect.hurt"), 1.0f, 100.0f);
+
+        if (health <= 0) {
+            Game.GUIRenderQueue.add(new GUITextDialogue("You died.", 50, Game.dialogueFont));
+        }
+
+        return oldHealth - health;
     }
 }

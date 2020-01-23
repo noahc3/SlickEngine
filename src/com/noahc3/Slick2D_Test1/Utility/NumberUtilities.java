@@ -42,8 +42,23 @@ public class NumberUtilities {
         return pointTowardsAngle(start, theta, radius, round);
     }
 
+    public static Point pointTowardsPoint(Point start, Point target, float radius, boolean round, boolean exceedTarget) {
+        if (!exceedTarget) radius = NumberUtilities.clamp(radius, 0, NumberUtilities.distance(start, target));
+        return pointTowardsPoint(start, target, radius, round);
+    }
+
     public static Point pointTowardsPoint(Point start, Point target, float radius, boolean round) {
         float theta = (float) (Math.atan2(target.getY() - start.getY(), target.getX() - start.getX()));
+        return pointTowardsAngle(start, theta, radius, round);
+    }
+
+    public static Point pointAwayFromPoint(Point start, Point target, float radius, boolean round, boolean exceedTarget) {
+        if (!exceedTarget) radius = NumberUtilities.clamp(radius, 0, NumberUtilities.distance(start, target));
+        return pointAwayFromPoint(start, target, radius, round);
+    }
+
+    public static Point pointAwayFromPoint(Point start, Point target, float radius, boolean round) {
+        float theta = (float) (Math.atan2(target.getY() - start.getY(), target.getX() - start.getX()) + Math.PI);
         return pointTowardsAngle(start, theta, radius, round);
     }
 

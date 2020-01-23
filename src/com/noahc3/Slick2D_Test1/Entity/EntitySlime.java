@@ -8,6 +8,7 @@ import com.noahc3.Slick2D_Test1.GUI.GUISlot;
 import com.noahc3.Slick2D_Test1.Game;
 import com.noahc3.Slick2D_Test1.Item.IItem;
 import com.noahc3.Slick2D_Test1.Resources.Identifier;
+import com.noahc3.Slick2D_Test1.Sound.SoundPlayer;
 import com.noahc3.Slick2D_Test1.Utility.NumberUtilities;
 import com.noahc3.Slick2D_Test1.Utility.Point2D;
 import com.noahc3.Slick2D_Test1.Utility.ScenePoint;
@@ -21,7 +22,9 @@ import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
-public class EntitySlime extends EntityGeneric {
+import java.util.Random;
+
+public class EntitySlime extends EntityGeneric implements IHealth {
 
     protected SpriteSheet ss_idle;
     protected Animation anim_idle;
@@ -29,7 +32,8 @@ public class EntitySlime extends EntityGeneric {
     protected SpriteSheet ss_jump;
     protected Animation anim_jump;
 
-    protected float defaultIdleCycle = 1000;
+    protected float minDefaultIdleCycle = 700;
+    protected float maxDefaultIdleCycle = 1300;
     protected float defaultJumpCycle = 600;
     protected float playerAggroRange = 200;
     protected float maxJumpDistance = 30;
@@ -40,14 +44,30 @@ public class EntitySlime extends EntityGeneric {
     protected Point jumpStart;
     protected Point jumpTarget;
 
+    protected float damage = 2.0f;
+    protected float damageCooldown = 0; //millis
+    protected float defaultDamageCooldown = 1000; //millis
+
+    protected float health = 10.0f;
+    protected float knockback = 30.0f;
+
+    protected float attackCooldown;
+
+    protected Random rng;
+
     public EntitySlime(String displayName, ScenePoint scenePoint) {
         super(new Identifier("entity.slime"), displayName);
         configureAnimations();
         posX = (int) scenePoint.pos.getX();
         posY = (int) scenePoint.pos.getY();
         this.scene = scenePoint.scene;
+        this.rng = new Random();
+        setIdleCycle();
 
-        this.idleCycle = 1000;
+    }
+
+    private void setIdleCycle() {
+        this.idleCycle = rng.nextFloat() * (maxDefaultIdleCycle - minDefaultIdleCycle) + minDefaultIdleCycle;
     }
 
     private void configureAnimations() {
@@ -61,6 +81,11 @@ public class EntitySlime extends EntityGeneric {
         anim_jump = new Animation(ss_jump, Math.round(defaultJumpCycle / ss_jump.getHorizontalCount()));
         anim_jump.setAutoUpdate(false);
         anim_jump.setLooping(true);
+    }
+
+    @Override
+    public EntityCategory getEntityCategory() {
+        return EntityCategory.HOSTILE;
     }
 
     @Override
@@ -123,7 +148,7 @@ public class EntitySlime extends EntityGeneric {
                 //the target will be the player if within the aggro range, or otherwise
                 //a random point with a random offset from the slime
                 if (idleCycle <= 0) {
-                    idleCycle = defaultIdleCycle;
+                    setIdleCycle();
                     isJumping = true;
                     jumpStart = this.getPosition();
                     if (Math.abs(NumberUtilities.distance(this.getPosition(), Game.player.getPosition())) <= playerAggroRange) {
@@ -131,6 +156,7 @@ public class EntitySlime extends EntityGeneric {
                     } else {
                         jumpTarget = NumberUtilities.randomPointOffset(this.getPosition(), maxJumpDistance / 2, maxJumpDistance, true);
                     }
+                    SoundPlayer.playPositionalSceneSound(new Identifier("sound.effect.slime"), rng.nextFloat() + 0.5f, 100.0f, this.getScenePosition(), false);
                 }
             } else {
                 jumpCycle -= delta;
@@ -161,26 +187,52 @@ public class EntitySlime extends EntityGeneric {
                 }
             }
 
-
-
-
-
-            //for(IEntity k : Registry.SCENES.get(getScene()).getEntities()) {
-            //    if (k instanceof IInteractable) {
-            //        if (((IInteractable) k).interactionArea() != null) {
-            //            if (getBoundingBox().intersects(((IInteractable) k).interactionArea())) {
-            //                if (((IInteractable) k).needsInteraction(this) && ((IInteractable) k).canInteract(this)) {
-            //                    this.interation = (IInteractable) k;
-            //                    canInteract = true;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            if (damageCooldown > 0) {
+                damageCooldown -= delta;
+            } else {
+                for(IEntity k : Registry.SCENES.get(getScene()).getEntities()) {
+                    if (k instanceof IHealth) {
+                        if (k.getEntityCategory().equals(EntityCategory.PLAYER)) {
+                            if (k.getBoundingBox().intersects(this.getBoundingBox())) {
+                                ((IHealth) k).damage(this, damage);
+                                damageCooldown = defaultDamageCooldown;
+                            }
+                        }
+                    }
+                }
+            }
 
         } else {
 
         }
+    }
+
+    @Override
+    public float getHealth() {
+        return health;
+    }
+
+    @Override
+    public float damage(Object sender, float rawDamage) {
+        float oldHealth = health;
+        health = NumberUtilities.clamp(health - rawDamage, 0, health);
+
+        if (sender instanceof IEntity) {
+            float[] entityCenter = ((IEntity) sender).getBoundingBox().getCenter();
+            Point knockbackTarget = NumberUtilities.pointAwayFromPoint(this.getPosition(), new Point(entityCenter[0], entityCenter[1]), knockback, true, true);
+            setIdleCycle();
+            jumpCycle = defaultJumpCycle;
+            isJumping = true;
+            jumpStart = this.getPosition();
+            jumpTarget = knockbackTarget;
+            SoundPlayer.playPositionalSceneSound(new Identifier("sound.effect.slime"), rng.nextFloat() * 0.2f + 0.3f, 300.0f, this.getScenePosition(), false);
+        }
+
+        if (health <= 0) {
+            Registry.SCENES.get(getScene()).removeEntity(this);
+        }
+
+        return oldHealth - health;
     }
 }
 

@@ -68,8 +68,6 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        player = new EntityPlayer(gc, "Player1");
-
         SoundStore.get().setSoundVolume(0.1f);
 
         Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.default"), "assets/textures/gui/slot/default.png"));
@@ -79,14 +77,22 @@ public class Game extends BasicGame {
         Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.overlay_k"), "assets/textures/gui/slot/overlay_k.png"));
         Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.gui.slot.overlay_l"), "assets/textures/gui/slot/overlay_l.png"));
 
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.entity.sword"), "assets/textures/entity/sword.png"));
         Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.entity.slime.idle"), "assets/textures/entity/slime/idle.png"));
         Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.entity.slime.jump"), "assets/textures/entity/slime/jump.png"));
+
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.debug"), "assets/textures/debug.png"));
+        Registry.IMAGES.tryRegister(new ImageResource(new Identifier("texture.item.sword"), "assets/textures/item/sword.png"));
 
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneTest"), SoundCategory.MUSIC));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.music.sceneHouseGeneric1"), SoundCategory.MUSIC));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.fountain"), SoundCategory.EFFECTS));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.door"), SoundCategory.EFFECTS));
         Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.pickup"), SoundCategory.EFFECTS));
+        Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.hurt"), SoundCategory.EFFECTS));
+        Registry.SOUNDS.tryRegister(new SoundResource(new Identifier("sound.effect.slime"), SoundCategory.EFFECTS));
+
+        player = new EntityPlayer(gc, "Player1");
 
         Registry.SCENES.tryRegister(new SceneTest(new Identifier("sceneTest"), "Test Scene"));
         Registry.SCENES.tryRegister(new SceneHouseGeneric1(new Identifier("sceneHouseGeneric1"), "Village House"));
@@ -294,6 +300,14 @@ public class Game extends BasicGame {
             debugDrawOffset += g.getFont().getHeight(debugString);
             g.drawString(debugString, 10, debugDrawOffset);
 
+        }
+
+        debugDrawOffset += 10;
+
+        if (ConfigDebug.DISPLAY_PLAYER_HEALTH) {
+            debugString = "PLAYER HEALTH: " + player.getHealth();
+            debugDrawOffset += g.getFont().getHeight(debugString);
+            g.drawString(debugString, 10, debugDrawOffset);
         }
 
     }

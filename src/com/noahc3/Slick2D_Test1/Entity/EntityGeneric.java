@@ -137,4 +137,14 @@ public class EntityGeneric implements IEntity, IResource {
     public Identifier getIdentifier() {
         return identifier;
     }
+
+    @Override
+    public EntityCategory getEntityCategory() {
+        return EntityCategory.INANIMATE;
+    }
+
+    @Override
+    public EntityCollisionType getEntityCollisionType() {
+        return EntityCollisionType.INCORPOREAL;
+    }
 }

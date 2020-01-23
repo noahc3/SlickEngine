@@ -5,6 +5,7 @@ public class ConfigDebug {
     public static boolean DISPLAY_PLAYER_COORDINATES = true;
     public static boolean DISPLAY_MOUSE_COORDINATES = true;
     public static boolean DISPLAY_CURRENT_SCENE = true;
+    public static boolean DISPLAY_PLAYER_HEALTH = true;
 
     public static boolean DRAW_WORLD_COLLIDERS = false;
     public static boolean DRAW_ENTITY_COLLIDERS = false;
